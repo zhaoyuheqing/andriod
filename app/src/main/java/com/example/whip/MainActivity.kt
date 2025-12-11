@@ -10,18 +10,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 尝试启动鸡盒
-        val packageNameToLaunch = "com.blazedays.perfectcoffee"
-        val launchIntent = packageManager.getLaunchIntentForPackage(packageNameToLaunch)
-
-        if (launchIntent != null) {
-            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(launchIntent)
-        } else {
-            Toast.makeText(this, "目标应用未安装", Toast.LENGTH_LONG).show()
+        try {
+            val intent = Intent()
+            intent.setClassName(
+                "com.blazedays.perfectcoffee",
+                "cn.mbrowser.activity.BrowserActivity"
+            )
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(this, "目标应用未安装或无法启动", Toast.LENGTH_LONG).show()
         }
 
-        // 关闭 Launcher 应用自身
         finish()
     }
 }
