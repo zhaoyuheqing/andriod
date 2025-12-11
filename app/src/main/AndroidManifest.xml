@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"        <!-- 使用现有图标 -->
+        android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
-        android:label="浏览器"                     <!-- 应用名字 -->
+        android:label="浏览器"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
@@ -20,4 +20,5 @@
         </activity>
 
     </application>
+
 </manifest>
