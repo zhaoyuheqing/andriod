@@ -24,7 +24,17 @@ android {
     namespace "com.example.launcherwhip"
 }
 
+// ⭐ 关键：强制所有 Kotlin 依赖锁定到 1.6.10（避免重复类）
+configurations.all {
+    resolutionStrategy {
+        force "org.jetbrains.kotlin:kotlin-stdlib:1.6.10"
+        force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10"
+        force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10"
+    }
+}
+
 dependencies {
+    // 降级到兼容 Kotlin 1.6.10 的版本（这是解决冲突的关键）
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
 }
