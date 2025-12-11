@@ -1,29 +1,39 @@
 package com.example.whip
-import android.media.MediaPlayer
-import android.hardware.*
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.media.MediaPlayer
+import android.view.MotionEvent
+import android.os.SystemClock
 
-class MainActivity : AppCompatActivity(), SensorEventListener {
-    private lateinit var sensorManager: SensorManager
+class MainActivity : AppCompatActivity() {
+
     private var mediaPlayer: MediaPlayer? = null
-    private var lastTime = 0L
+    private var lastPlayTime: Long = 0          // 记录上次播放时间
+    private val interval: Long = 1000           // 间隔 1 秒（毫秒）
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // 初始化 MediaPlayer
         mediaPlayer = MediaPlayer.create(this, R.raw.whip)
-        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
-        val accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        sensorManager.registerListener(this, accel, SensorManager.SENSOR_DELAY_GAME)
     }
-    override fun onSensorChanged(event: SensorEvent) {
-        val (x,y,z)=event.values
-        val speed=x*x+y*y+z*z
-        val now=System.currentTimeMillis()
-        if(speed>120 && now-lastTime>800){
-            mediaPlayer?.start()
-            lastTime=now
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (event?.action == MotionEvent.ACTION_DOWN) {
+            val currentTime = SystemClock.elapsedRealtime()
+            if (currentTime - lastPlayTime >= interval) {
+                mediaPlayer?.start()
+                lastPlayTime = currentTime
+            }
         }
+        return super.onTouchEvent(event)
     }
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer?.release()
+        mediaPlayer = null
+    }
 }
