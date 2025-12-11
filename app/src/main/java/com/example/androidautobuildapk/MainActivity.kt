@@ -1,4 +1,5 @@
-package com.example.androidautobuildapk
+package com.example.whip
+
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
