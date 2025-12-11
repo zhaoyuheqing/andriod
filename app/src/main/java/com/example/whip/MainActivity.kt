@@ -1,23 +1,27 @@
 package com.example.launcherwhip
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.content.Intent
+import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val targetPackage = "com.blazedays.perfectcoffee"  // 鸡盒包名
+        // 尝试启动鸡盒
+        val packageNameToLaunch = "com.blazedays.perfectcoffee"
+        val launchIntent = packageManager.getLaunchIntentForPackage(packageNameToLaunch)
 
-        val intent = packageManager.getLaunchIntentForPackage(targetPackage)
-        if (intent != null) {
-            startActivity(intent)
+        if (launchIntent != null) {
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(launchIntent)
         } else {
-            Toast.makeText(this, "目标应用未安装", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "目标应用未安装", Toast.LENGTH_LONG).show()
         }
 
-        finish()  // 启动目标应用后关闭自己
+        // 关闭 Launcher 应用自身
+        finish()
     }
 }
